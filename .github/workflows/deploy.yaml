@@ -9,13 +9,14 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
+
     strategy:
       matrix:
         service: [auth-service, blog-service, comment-service, profile-service]
 
     steps:
       - name: Checkout Code
-      
+
         uses: actions/checkout@v3
 
       - name: Set up Node
