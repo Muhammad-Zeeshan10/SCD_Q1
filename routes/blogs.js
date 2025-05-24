@@ -3,8 +3,8 @@ const { createBlog, getBlogs, incrementViews } = require('../controllers/blogCon
 const authMiddleware = require('../middleware/auth');
 const router = express.Router();
 
-router.post('/', authMiddleware, createBlog);           // ✅ Protected
-router.get('/', getBlogs);                              // ❌ Public
+router.post('/blogs', authMiddleware, createBlog);           // ✅ Protected
+router.get('/blogs', getBlogs);                              // ❌ Public
 router.post('/view/:blogId', incrementViews);           // ❌ Public
 
 module.exports = router;

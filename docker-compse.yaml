@@ -1,0 +1,75 @@
+version: "3.8"
+
+services:
+  auth-service:
+    build: ./auth-service
+    environment:
+      - PORT=3001
+      - MONGO_URI=mongodb://mongo:27017/auth
+      - JWT_SECRET=supersecret
+    depends_on:
+      - mongo
+    networks:
+      - devnet
+
+  blog-service:
+    build: ./blog-service
+    environment:
+      - PORT=3002
+      - MONGO_URI=mongodb://mongo:27017/blogs
+      - JWT_SECRET=supersecret
+    depends_on:
+      - mongo
+    networks:
+      - devnet
+
+  comment-service:
+    build: ./comment-service
+    environment:
+      - PORT=3003
+      - MONGO_URI=mongodb://mongo:27017/comments
+      - JWT_SECRET=supersecret
+    depends_on:
+      - mongo
+    networks:
+      - devnet
+
+  profile-service:
+    build: ./profile-service
+    environment:
+      - PORT=3004
+      - MONGO_URI=mongodb://mongo:27017/profiles
+      - JWT_SECRET=supersecret
+    depends_on:
+      - mongo
+    networks:
+      - devnet
+
+  api-gateway:
+    build: ./api-gateway
+    environment:
+      - PORT=3000
+      - JWT_SECRET=supersecret
+    ports:
+      - "3000:3000"
+    depends_on:
+      - auth-service
+      - blog-service
+      - comment-service
+      - profile-service
+    networks:
+      - devnet
+
+  mongo:
+    image: mongo:6
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - devnet
+
+volumes:
+  mongo-data:
+
+networks:
+  devnet:
+    driver: bridge
